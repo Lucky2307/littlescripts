@@ -27,6 +27,10 @@ def rotation(mat: list, angle: int):
         [math.cos(angleRadian), -math.sin(angleRadian)],
         [math.sin(angleRadian), math.cos(angleRadian)]
     ]
+    if mat[0].__len__() == 3:
+        for i in rotMatrix:
+            i.append(0)
+        rotMatrix.append([0, 0, 1])
     return dot(mat, rotMatrix)
 
 def translate(mat: list, x, y, z = 0):
@@ -36,15 +40,16 @@ def translate(mat: list, x, y, z = 0):
         if xMat.__len__() == 3: xMat[2] += z
     return mat
 
-def translateMultiplication(mat: list, x, y):
+def translateMultiplication(mat: list, x, y, z = 0):
     retMatrix = []
     for i in mat:
         i.append(1)
         retMatrix.append(i)
     translateMatrix = [
-        [1, 0, 0],
-        [0, 1, 0],
-        [x, y, 1]
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [x, y, z, 1]
     ]
     retMatrix = dot(retMatrix, translateMatrix)
     for i in retMatrix:
@@ -57,9 +62,9 @@ def scale(mat: list, x, y, z = 0):
         [x, 0],
         [0, y]
     ]
-    if z != 0: 
-        scaleMatrix[0].append(0)
-        scaleMatrix[1].append(0)
+    if mat[0].__len__() == 3:
+        for i in scaleMatrix:
+            i.append(0)
         scaleMatrix.append([0, 0, z])
 
     return dot(mat, scaleMatrix)
@@ -104,8 +109,8 @@ if __name__ == "__main__":
         [0, 2]
     ]
     matThree = [
-        [2, 0],
-        [0, 2]
+        [2, 0, 1],
+        [0, 2, 1]
     ]
 
     print("Dot product")
@@ -116,27 +121,27 @@ if __name__ == "__main__":
         print("\n")
 
     print("Scale")
-    scl = scale(matTwo, 2, 2)
+    scl = scale(matThree, 2, 2)
     for m in scl:
         for n in m:
             print(n)
         print("\n")
 
-    print("Shear")
-    shr = shear(matTwo, x = 2)
-    for m in shr:
-        for n in m:
-            print(n)
-        print("\n")
+    # print("Shear")
+    # shr = shear(matThree, x = 2)
+    # for m in shr:
+    #     for n in m:
+    #         print(n)
+    #     print("\n")
 
     print("Transpose")
-    trn = transpose(matTwo)
+    trn = transpose(matThree)
     for m in trn:
         print(m)
     print("\n")
 
     print("Rotation")
-    rot = rotation(matTwo, 180)
+    rot = rotation(matThree, 180)
     for m in rot:
         for n in m:
             print(n)
@@ -149,7 +154,7 @@ if __name__ == "__main__":
     print("\n")
 
     print("Translate Multiplication")
-    tsl = translateMultiplication(matTwo, 2, 2)
+    tsl = translateMultiplication(matThree, 2, 2)
     for m in tsl:
         for n in m:
             print(n)
