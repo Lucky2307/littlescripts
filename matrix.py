@@ -13,7 +13,7 @@ def dot(a: list, b: list):
             itemNote = ""
             for i in range(a[x].__len__()):
                 item += a[x][i]*b[i][y]
-                itemNote += "({} * {}) + ".format(a[x][i], b[i][y])
+                itemNote += "({} * {}) + ".format(round(a[x][i]), round(b[i][y]))
             xMatrix.append(round(item, 2))
             xNoteMatrix.append(itemNote[:-3])
         noteMatrix.append(xNoteMatrix)
@@ -35,6 +35,22 @@ def translate(mat: list, x, y, z = 0):
         xMat[1] += y
         if xMat.__len__() == 3: xMat[2] += z
     return mat
+
+def translateMultiplication(mat: list, x, y):
+    retMatrix = []
+    for i in mat:
+        i.append(1)
+        retMatrix.append(i)
+    translateMatrix = [
+        [1, 0, 0],
+        [0, 1, 0],
+        [x, y, 1]
+    ]
+    retMatrix = dot(retMatrix, translateMatrix)
+    for i in retMatrix:
+        for j in i:
+            j = j[:-1]
+    return retMatrix
 
 def scale(mat: list, x, y, z = 0):
     scaleMatrix = [
@@ -92,25 +108,49 @@ if __name__ == "__main__":
         [0, 2]
     ]
 
+    print("Dot product")
     mat = dot(matTwo, matThree)
     for m in mat:
         for n in m:
             print(n)
         print("\n")
 
+    print("Scale")
     scl = scale(matTwo, 2, 2)
     for m in scl:
         for n in m:
             print(n)
         print("\n")
 
+    print("Shear")
     shr = shear(matTwo, x = 2)
     for m in shr:
         for n in m:
             print(n)
         print("\n")
 
+    print("Transpose")
     trn = transpose(matTwo)
     for m in trn:
         print(m)
+    print("\n")
+
+    print("Rotation")
+    rot = rotation(matTwo, 180)
+    for m in rot:
+        for n in m:
+            print(n)
+    print("\n")
+
+    print("Translate")
+    tsl = translate(matTwo, 2, 2)
+    for m in tsl:
+        print(m)
+    print("\n")
+
+    print("Translate Multiplication")
+    tsl = translateMultiplication(matTwo, 2, 2)
+    for m in tsl:
+        for n in m:
+            print(n)
     print("\n")
